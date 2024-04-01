@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  app:
+    image: dcoomber/telegram-bot-bash:1.52
+    restart: unless-stopped
+    user: bashbot
+    command: >
+      bash -l -c "/app/bashbot.sh start
+      && tail -f /dev/null"
+    environment:
+      - DEEPINFRA_API_KEY=$DEEPINFRA_API_KEY
+      - PROVIDER=$PROVIDER
+      - MODEL_NAME=$MODEL_NAME
+      - VERSION=$VERSION
+    volumes:
+      - type: bind
+        source: ./botconfig.jssh
+        target: /app/botconfig.jssh
+      - type: bind
+        source: ./botacl
+        target: /app/botacl
+      - type: bind
+        source: ./logs
+        target: /app/logs
+      - type: bind
+        source: ./mycommands.sh
+        target: /app/mycommands.sh

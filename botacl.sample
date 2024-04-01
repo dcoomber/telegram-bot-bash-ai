@@ -1,0 +1,27 @@
+# file: botacl
+# a user not listed here, will return false from 'user_is_allowed'
+#
+# Format:
+# user:resource:chat
+
+# allow user 123456789 access to all resources in all chats
+123456789:*:*
+
+# allow user 12131415 to start bot in all chats
+12131415:start:*
+
+# allow user 987654321 only to start bot in chat 98979695
+987654321:start:98979695
+
+# special case allow ALL users ONE action in all groups or in one group
+ALL:search:*
+ALL:search:98979695
+
+# not valid, ALL must have an action!
+ALL:*:*
+
+# * are only allowed on the right hand side and not for user!
+# the following examples are NOT valid!
+*:*:*
+*:start:*
+*:*:98979695
