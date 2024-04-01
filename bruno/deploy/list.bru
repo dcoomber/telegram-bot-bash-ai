@@ -1,0 +1,15 @@
+meta {
+  name: list
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/deploy/list?status=running
+  body: none
+  auth: none
+}
+
+query {
+  status: running
+}

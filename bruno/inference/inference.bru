@@ -1,0 +1,26 @@
+meta {
+  name: inference
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/inference/{{MODEL_NAME}}
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "input": "{{input}}", 
+    "stream": {{stream}}
+  }
+}
+
+vars:pre-request {
+  input: What is time?
+}
