@@ -30,7 +30,7 @@ You can use the API collection to explore the available interactions with the De
 
 Lets not re-invent the wheel!  Follow the steps on [this page](https://github.com/topkecleon/telegram-bot-bash/blob/master/doc/1_firstbot.md).
 
-#### Step 2:  Set your bot configuration
+### Step 2:  Set your bot configuration
 
 Create you `botconfig.jssh` from the example provided in `boconfig.jssh.sample`.
 
@@ -40,7 +40,7 @@ cp -n botconfig.jssh.sample botconfig.jssh
 
 Update the relevant fields based on your Telegram configuration.
 
-##### Testing your bot configuration
+#### Testing your bot configuration
 
 Start up your local Docker services (this may be Docker Desktop or Docker CE, depending on your configuration).
 
@@ -52,16 +52,17 @@ Visit your bot in Telegram and click the `Start` button.
 
 Your bot should respond with a message such as:  `Hi, you are the first user after startup!`.
 
-#### Step 3:  DeepInfra
+### Step 3:  DeepInfra
 
 > This is a paid service.  Make sure to read DeepInfra's documentation before you use their services.
-
 
 1. Visit https://deepinfra.com/ and register an account
 1. Visit your `Dashboard > Settings` and set a reasonable payment limit based on your financial situation
 1. Visit your `Dashboard > API Keys` to create an API key for use with this project
 
-#### Set `.env` for Docker and Bruno
+## Running your bot
+
+### Set `.env` for Docker and Bruno
 
 ```bash
 cp -n .env.sample .env
@@ -70,4 +71,8 @@ cp -n bruno/.env.sample bruno/.env
 
 Edit the above files in your favourite text editor, updating the `DEEPINFRA_API_KEY` key with the key created in the preceding section.
 
-### 
+### Start up the bot in Docker
+
+```bash
+docker compose up -d
+```
