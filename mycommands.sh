@@ -51,6 +51,9 @@ else
 				result="$(delete_instance)"
 				send_normal_message "${CHAT[ID]}" "${result}"
 				;;
+			'/'*)
+				send_normal_message "${CHAT[ID]}" "${MESSAGE} isn't a valid command."
+				;;
 			*)
 				result="$(inference "${MESSAGE}")"
 				escaped_result="$(escape_message "${result}")"
@@ -130,7 +133,7 @@ else
 
 		# Deploy
 		url="https://api.deepinfra.com/v1/deploy"
-		data="{ \"provider\": \"${PROVIDER}\", \"model_name\": \"${MODEL_NAME}\", \"version\": \"${VERSION}\" }"
+		data="{ \"provider\": \"${PROVIDER}\", \"model_name\": \"${MODEL_NAME}\" }"
 		send_action "${CHAT[ID]}" "typing"
 		deepinfra_post "${url}" "${data}" > "${output}"
 		jq -r < "${output}"

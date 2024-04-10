@@ -11,7 +11,6 @@ services:
       - DEEPINFRA_API_KEY=$DEEPINFRA_API_KEY
       - PROVIDER=$PROVIDER
       - MODEL_NAME=$MODEL_NAME
-      - VERSION=$VERSION
     volumes:
       - type: bind
         source: ./botconfig.jssh
