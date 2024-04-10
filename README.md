@@ -32,10 +32,11 @@ Lets not re-invent the wheel!  Follow the steps on [this page](https://github.co
 
 ### Step 2:  Set your bot configuration
 
-Create you `botconfig.jssh` from the example provided in `boconfig.jssh.sample`.
+Create your `botconfig.jssh` and `botacl` from the examples provided in `boconfig.jssh.sample` and `botacl.sample`.
 
 ```bash
 cp -n botconfig.jssh.sample botconfig.jssh
+cp -n botacl.sample botacl
 ```
 
 Update the relevant fields based on your Telegram configuration.
