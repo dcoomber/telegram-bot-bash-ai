@@ -25,4 +25,6 @@ jobs:
         MODEL_NAME: ${{ env.MODEL_NAME }}
       run: |
         cd bruno
+        echo $PROVIDER
+        echo $MODEL_NAME
         npm run test
