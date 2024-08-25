@@ -23,4 +23,4 @@ jobs:
       run: |
         cd bruno
         npm ci
-        npm run test
+        npm run test -- --env-var MODEL_NAME=${MODEL_NAME} --env-var PROVIDER=${PROVIDER}
