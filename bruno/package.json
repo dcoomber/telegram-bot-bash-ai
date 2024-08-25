@@ -1,0 +1,19 @@
+{
+  "name": "telegram-bot-bash-ai",
+  "version": "1.0.0",
+  "description": "A DeepInfra Telegram Bot based on https://github.com/topkecleon/telegram-bot-bash",
+  "main": "index.js",
+  "scripts": {
+    "test": "bru run --env DeepInfra"
+  },
+  "keywords": [
+    "bruno",
+    "bruno-cli",
+    "api-test"
+  ],
+  "author": "dcoomber",
+  "license": "WTFPLv2",
+  "dependencies": {
+    "@usebruno/cli": "^1.22.0"
+  }
+}

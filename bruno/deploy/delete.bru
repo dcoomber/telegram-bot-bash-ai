@@ -19,5 +19,19 @@ auth:bearer {
 }
 
 vars:pre-request {
-  deploy_id: D58YeyUvCPXG0qwb
+  deploy_id: {{deploy_id}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  const data = res.getBody();
+  
+  test("should contain expected attributes", function() {
+    expect(data).to.have.property('deploy_id');
+    expect(data.deploy_id).to.be.a('string');
+  });
+  
 }

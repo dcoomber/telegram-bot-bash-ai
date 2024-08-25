@@ -24,3 +24,23 @@ body:json {
 vars:pre-request {
   input: What is time?
 }
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  const data = res.getBody();
+  
+  test("should contain expected attributes", function() {
+    expect(data).to.have.property('inference_status');
+    expect(data.inference_status).to.be.a('object');
+  
+    expect(data).to.have.property('results');
+    expect(data.results).to.be.a('array');
+  
+    expect(data.results[0]).to.have.property('generated_text');
+    expect(data.results[0].generated_text).to.be.a('string');
+  });
+  
+}
