@@ -23,6 +23,4 @@ jobs:
       run: |
         cd bruno
         npm install
-        bru --version
         npm run test -- --env-var PROVIDER=${PROVIDER} --env-var MODEL_NAME=${MODEL_NAME}
-        bru --version
