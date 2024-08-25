@@ -17,13 +17,13 @@ jobs:
     - uses: actions/checkout@v3
 
     # Install Bruno CLI
-    - name: Install BrunoCLI
+    - name: Install Bruno CLI
       run: |
         cd bruno
         npm install -g @usebruno/cli
 
-    # Run tests
-    - name: Run tests
+    # Run Bruno Collection
+    - name: Run Bruno Collection
       env:
         DEEPINFRA_API_KEY: ${{ secrets.DEEPINFRA_API_KEY }}
         PROVIDER: ${{ vars.PROVIDER }}
