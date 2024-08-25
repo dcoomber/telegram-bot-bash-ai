@@ -7,11 +7,15 @@ meta {
 post {
   url: {{baseUrl}}/v1/deploy
   body: json
-  auth: none
+  auth: bearer
 }
 
 headers {
   Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{DEEPINFRA_API_KEY}}
 }
 
 body:json {

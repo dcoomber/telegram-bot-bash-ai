@@ -7,13 +7,17 @@ meta {
 delete {
   url: {{baseUrl}}/deploy/{{deploy_id}}
   body: none
-  auth: none
+  auth: bearer
 }
 
 headers {
   Content-Type: application/json
 }
 
+auth:bearer {
+  token: {{DEEPINFRA_API_KEY}}
+}
+
 vars:pre-request {
-  deploy_id: {{deploy_id}}
+  deploy_id: D58YeyUvCPXG0qwb
 }
