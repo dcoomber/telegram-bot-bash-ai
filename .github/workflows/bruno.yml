@@ -26,4 +26,4 @@ jobs:
         MODEL_NAME: ${{ vars.MODEL_NAME }}
       run: |
         cd bruno
-        npm run test
+        npm run test -- --env-var PROVIDER=${PROVIDER} --env-var MODEL_NAME=${MODEL_NAME}
