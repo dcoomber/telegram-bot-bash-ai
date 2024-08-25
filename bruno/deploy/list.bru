@@ -17,3 +17,21 @@ params:query {
 auth:bearer {
   token: {{DEEPINFRA_API_KEY}}
 }
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  const data = res.getBody();
+  
+  test("should be an array", function() {
+    expect(data).to.be.a('array');
+  });
+  
+  test("should contain expected attributes", function() {
+    expect(data[0]).to.have.property('deploy_id');
+    expect(data[0].deploy_id).to.be.a('string');
+  });
+  
+}

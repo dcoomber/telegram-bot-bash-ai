@@ -25,7 +25,21 @@ body:json {
   }
 }
 
+assert {
+  res.status: eq 200
+}
+
 script:post-response {
   let data = res.getBody();
   bru.setVar("deploy_id", data.deploy_id);
+}
+
+tests {
+  const data = res.getBody();
+  
+  test("should contain expected attributes", function() {
+    expect(data).to.have.property('deploy_id');
+    expect(data.deploy_id).to.be.a('string');
+  });
+  
 }
