@@ -19,6 +19,10 @@ jobs:
         cd bruno
         npm install
     - name: run tests
+      env:
+        DEEPINFRA_API_KEY: ${{ secrets.DEEPINFRA_API_KEY }}
+        PROVIDER: ${{ env.PROVIDER }}
+        MODEL_NAME: ${{ env.MODEL_NAME }}
       run: |
         cd bruno
         npm run test
