@@ -15,10 +15,6 @@ jobs:
     environment: CI
     steps:
     - uses: actions/checkout@v3
-      env:
-        DEEPINFRA_API_KEY: ${{ secrets.DEEPINFRA_API_KEY }}
-        PROVIDER: ${{ vars.PROVIDER }}
-        MODEL_NAME: ${{ vars.MODEL_NAME }}
 
     # Install Bruno CLI
     - name: Install BrunoCLI
@@ -28,6 +24,10 @@ jobs:
 
     # Run tests
     - name: Run tests
+      env:
+        DEEPINFRA_API_KEY: ${{ secrets.DEEPINFRA_API_KEY }}
+        PROVIDER: ${{ vars.PROVIDER }}
+        MODEL_NAME: ${{ vars.MODEL_NAME }}
       run: |
         cd bruno
-        npm run test -- --env-var PROVIDER=${PROVIDER} --env-var MODEL_NAME=${MODEL_NAME}
+        bru run --env DeepInfra --env-var PROVIDER=${PROVIDER} --env-var MODEL_NAME=${MODEL_NAME}
