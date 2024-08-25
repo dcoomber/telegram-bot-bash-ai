@@ -30,4 +30,6 @@ jobs:
         MODEL_NAME: ${{ vars.MODEL_NAME }}
       run: |
         cd bruno
-        bru run --env DeepInfra --env-var PROVIDER=${PROVIDER} --env-var MODEL_NAME=${MODEL_NAME}
+        bru run --env DeepInfra \
+        --env-var PROVIDER=${PROVIDER} \
+        --env-var MODEL_NAME=${MODEL_NAME}
