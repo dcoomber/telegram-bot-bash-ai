@@ -3,3 +3,4 @@ botconfig.jssh
 botacl
 logs/*
 docker-compose.override.yml
+node_modules
