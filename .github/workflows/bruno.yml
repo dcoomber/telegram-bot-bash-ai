@@ -15,10 +15,6 @@ jobs:
     environment: CI
     steps:
     - uses: actions/checkout@v3
-    - name: install dependencies
-      run: |
-        cd bruno
-        npm install
     - name: run tests
       env:
         DEEPINFRA_API_KEY: ${{ secrets.DEEPINFRA_API_KEY }}
@@ -26,6 +22,7 @@ jobs:
         MODEL_NAME: ${{ vars.MODEL_NAME }}
       run: |
         cd bruno
+        npm install
         bru --version
         npm run test -- --env-var PROVIDER=${PROVIDER} --env-var MODEL_NAME=${MODEL_NAME}
         bru --version
