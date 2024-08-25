@@ -7,9 +7,13 @@ meta {
 get {
   url: {{baseUrl}}/deploy/list?status=running
   body: none
-  auth: none
+  auth: bearer
 }
 
-query {
+params:query {
   status: running
+}
+
+auth:bearer {
+  token: {{DEEPINFRA_API_KEY}}
 }
