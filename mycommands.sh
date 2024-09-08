@@ -55,7 +55,7 @@ else
 				send_normal_message "${CHAT[ID]}" "${MESSAGE} isn't a valid command."
 				;;
 			*)
-				result="$(inference "${MESSAGE}")"
+				result="$(chat "${MESSAGE}")"
 				escaped_result="$(escape_message "${result}")"
 				send_markdown_message "${CHAT[ID]}" "${escaped_result}"
 				;;
@@ -167,6 +167,21 @@ else
 
 		send_action "${CHAT[ID]}" "typing"
 		jq -r '.results[0].generated_text' < "${output}"
+	}
+
+	chat(){
+		# Output stream
+		output="/tmp/${CHAT[ID]}-chat.response"
+
+		# Chat
+		input="${1}"
+		url="https://api.deepinfra.com/v1/openai/chat/completions"
+		data="{ \"model\": \"${MODEL_NAME}\", \"stream\": false, \"messages\": [ {\"role\": \"system\", \"content\": \"${SYSTEM_PROMPT}\"}, {\"role\": \"user\", \"content\": \"${input}\"} ] }"
+		send_action "${CHAT[ID]}" "typing"
+		deepinfra_post "${url}" "${data}" > "${output}"
+
+		send_action "${CHAT[ID]}" "typing"
+		jq -r '.choices[0].message.content' < "${output}"
 	}
 
 	###########################

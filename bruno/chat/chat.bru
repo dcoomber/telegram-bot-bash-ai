@@ -1,0 +1,55 @@
+meta {
+  name: chat
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/openai/chat/completions
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "model": "{{MODEL_NAME}}",
+    "stream": {{stream}},
+    "messages": [
+      {
+        "role": "system",
+        "content": "{{SYSTEM_PROMPT}}"
+      },
+      {
+        "role": "user",
+        "content": "{{input}}"
+      }
+    ]
+  }
+}
+
+vars:pre-request {
+  input: What is time?
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  const data = res.getBody();
+  
+  test("should contain expected attributes", function() {
+    expect(data).to.have.property('usage');
+    expect(data.usage).to.be.a('object');
+  
+    expect(data).to.have.property('choices');
+    expect(data.choices).to.be.a('array');
+  
+    expect(data.choices[0].message).to.have.property('content');
+    expect(data.choices[0].message.content).to.be.a('string');
+  });
+}
