@@ -5,17 +5,13 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/deploy/list?status=running
+  url: {{baseUrl}}/models/list
   body: none
-  auth: bearer
+  auth: none
 }
 
-params:query {
-  status: running
-}
-
-auth:bearer {
-  token: {{DEEPINFRA_API_KEY}}
+headers {
+  Accept: application/json
 }
 
 assert {
@@ -30,8 +26,8 @@ tests {
   });
   
   test("should contain expected attributes", function() {
-    expect(data[0]).to.have.property('deploy_id');
-    expect(data[0].deploy_id).to.be.a('string');
+    expect(data[0].model_name).to.be.a('string');
+    expect(data[0].pricing.cents_per_input_token).to.be.a('number');
   });
   
 }
