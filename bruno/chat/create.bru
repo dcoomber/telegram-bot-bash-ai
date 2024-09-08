@@ -1,12 +1,12 @@
 meta {
-  name: delete
+  name: create
   type: http
-  seq: 3
+  seq: 1
 }
 
-delete {
-  url: {{baseUrl}}/deploy/{{deploy_id}}
-  body: none
+post {
+  url: {{baseUrl}}/v1/deploy
+  body: json
   auth: bearer
 }
 
@@ -18,8 +18,20 @@ auth:bearer {
   token: {{DEEPINFRA_API_KEY}}
 }
 
+body:json {
+  {
+    "provider": "{{PROVIDER}}", 
+    "model_name": "{{MODEL_NAME}}"
+  }
+}
+
 assert {
   res.status: eq 200
+}
+
+script:post-response {
+  let data = res.getBody();
+  bru.setVar("deploy_id", data.deploy_id);
 }
 
 tests {
