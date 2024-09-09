@@ -77,7 +77,7 @@ else
 		}
 		myinlines() {
 		#######################
-		# this fuinction is called only if you has set INLINE=1 !!
+		# this function is called only if you has set INLINE=1 !!
 		# shellcheck disable=SC2128
 		iQUERY="${iQUERY,,}"
 		
@@ -176,7 +176,7 @@ else
 		# Chat
 		input="${1}"
 		url="https://api.deepinfra.com/v1/openai/chat/completions"
-		data="{ \"model\": \"${MODEL_NAME}\", \"stream\": false, \"messages\": [ {\"role\": \"system\", \"content\": \"${SYSTEM_PROMPT}\"}, {\"role\": \"user\", \"content\": \"${input}\"} ] }"
+		data="{ \"model\": \"${MODEL_NAME}\", \"max_tokens\": \"${MAX_TOKENS}\", \"stream\": false, \"messages\": [ {\"role\": \"system\", \"content\": \"${SYSTEM_PROMPT}\"}, {\"role\": \"user\", \"content\": \"${input}\"} ] }"
 		send_action "${CHAT[ID]}" "typing"
 		deepinfra_post "${url}" "${data}" > "${output}"
 

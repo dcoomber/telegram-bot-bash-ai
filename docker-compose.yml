@@ -10,6 +10,8 @@ services:
       - DEEPINFRA_API_KEY=$DEEPINFRA_API_KEY
       - PROVIDER=$PROVIDER
       - MODEL_NAME=$MODEL_NAME
+      - MAX_TOKENS=$MAX_TOKENS
+      - SYSTEM_PROMPT=$SYSTEM_PROMPT
     volumes:
       - type: bind
         source: ./botconfig.jssh
