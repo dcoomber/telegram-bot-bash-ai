@@ -32,4 +32,8 @@ jobs:
         SYSTEM_PROMPT: ${{ vars.SYSTEM_PROMPT }}
       run: |
         cd bruno
-        bru run --env DeepInfra --env-var PROVIDER=${PROVIDER} --env-var MODEL_NAME=${MODEL_NAME} --env-var MAX_TOKENS=${MAX_TOKENS} --env-var SYSTEM_PROMPT="${SYSTEM_PROMPT}"
+        bru run --env DeepInfra \
+          --env-var PROVIDER=${PROVIDER} \
+          --env-var MODEL_NAME=${MODEL_NAME} \
+          --env-var MAX_TOKENS=${MAX_TOKENS} \
+          --env-var SYSTEM_PROMPT="${SYSTEM_PROMPT}"
