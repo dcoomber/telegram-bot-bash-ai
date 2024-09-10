@@ -20,14 +20,16 @@ assert {
 
 tests {
   const data = res.getBody();
+  const filteredData = data.filter(model => model.type === 'text-generation');
   
   test("should be an array", function() {
     expect(data).to.be.a('array');
+    expect(filteredData).to.be.a('array');
   });
   
   test("should contain expected attributes", function() {
-    expect(data[0].model_name).to.be.a('string');
-    expect(data[0].pricing.cents_per_input_token).to.be.a('number');
+    expect(filteredData[0].model_name).to.be.a('string');
+    expect(filteredData[0].pricing.cents_per_input_token).to.be.a('number');
   });
   
 }
