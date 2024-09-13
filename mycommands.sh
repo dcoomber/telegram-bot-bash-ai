@@ -2,8 +2,10 @@
 
 ####################
 # Config has moved to bashbot.conf
-# shellcheck source=./commands.sh
-[ -r "${BASHBOT_ETC:-.}/mycommands.conf" ] && source "${BASHBOT_ETC:-.}/mycommands.conf"  "$1"
+if [[ -r "${BASHBOT_ETC:-.}/mycommands.conf" ]]; then
+	# shellcheck source=/dev/null
+	source "${BASHBOT_ETC:-.}/mycommands.conf"  "$1"
+fi
 
 ##################
 # lets's go
@@ -32,12 +34,13 @@ else
 		if [ -n "${SERVICE}" ]; then
 			# example: delete every service message
 			if [ "${SILENCER}" = "yes" ]; then
+				# shellcheck disable=SC2153
 				delete_message "${CHAT[ID]}" "${MESSAGE[ID]}"
 			fi
 		fi
 
 		# remove keyboard if you use keyboards
-		[ -n "${REMOVEKEYBOARD}" ] && remove_keyboard "${CHAT[ID]}" &
+		[[ -n "${REMOVEKEYBOARD}" ]] && remove_keyboard "${CHAT[ID]}" &
 		[[ -n "${REMOVEKEYBOARD_PRIVATE}" &&  "${CHAT[ID]}" == "${USER[ID]}" ]] && remove_keyboard "${CHAT[ID]}" &
 
 		# uncomment to fix first letter upper case because of smartphone auto correction
@@ -45,6 +48,10 @@ else
 		case "${MESSAGE}" in
 			'/start'*)
 				result="$(start_instance)"
+				send_normal_message "${CHAT[ID]}" "${result}"
+				;;
+			'/raw'*)
+				result="$(raw_output)"
 				send_normal_message "${CHAT[ID]}" "${result}"
 				;;
 			'/delete'*)
@@ -58,35 +65,6 @@ else
 				result="$(chat "${MESSAGE}")"
 				escaped_result="$(escape_message "${result}")"
 				send_markdown_message "${CHAT[ID]}" "${escaped_result}"
-				;;
-		esac
-		}
-
-		mycallbacks() {
-		#######################
-		# callbacks from buttons attached to messages will be processed here
-		case "${iBUTTON[USER_ID]}+${iBUTTON[CHAT_ID]}" in
-				*)	# all other callbacks are processed here
-			local callback_answer
-			: # your processing here ...
-			:
-			# Telegram needs an ack each callback query, default empty
-			answer_callback_query "${iBUTTON[ID]}" "${callback_answer}"
-			;;
-		esac
-		}
-		myinlines() {
-		#######################
-		# this function is called only if you has set INLINE=1 !!
-		# shellcheck disable=SC2128
-		iQUERY="${iQUERY,,}"
-		
-		case "${iQUERY}" in
-			##################
-			# example inline command, replace it by your own
-			"image "*) # search images with yahoo
-				local search="${iQUERY#* }"
-				answer_inline_multi "${iQUERY[ID]}" "$(my_image_search "${search}")"
 				;;
 		esac
 		}
@@ -128,20 +106,20 @@ else
 	}
 
 	start_instance(){
-		# Output stream
-		output="/tmp/${CHAT[ID]}-start_instance.response"
+		# Response file
+		response="/tmp/${CHAT[ID]}-start_instance.response"
 
 		# Deploy
 		url="https://api.deepinfra.com/v1/deploy"
 		data="{ \"provider\": \"${PROVIDER}\", \"model_name\": \"${MODEL_NAME}\" }"
 		send_action "${CHAT[ID]}" "typing"
-		deepinfra_post "${url}" "${data}" > "${output}"
-		jq -r < "${output}"
+		deepinfra_post "${url}" "${data}" > "${response}"
+		jq -r < "${response}"
 	}
 
 	delete_instance(){
-		# Output stream
-		output="/tmp/${CHAT[ID]}-delete_instance.response"
+		# Response file
+		response="/tmp/${CHAT[ID]}-delete_instance.response"
 
 		# Get deploy ID
 		url="https://api.deepinfra.com/deploy/list?status=running"
@@ -150,38 +128,47 @@ else
 		# Delete the deployment
 		url="https://api.deepinfra.com/deploy/${deploy_id}"
 		send_action "${CHAT[ID]}" "typing"
-		deepinfra_delete "${url}" > "${output}"
-		jq -r < "${output}"
+		deepinfra_delete "${url}" > "${response}"
+		jq -r < "${response}"
 	}
 
 	inference(){
-		# Output stream
-		output="/tmp/${CHAT[ID]}-inference.response"
+		# Response file
+		response="/tmp/${CHAT[ID]}-chat.response"
 
 		# Chat
-		input="${1}"
+		input=$(echo "${1}" | tr '\n' ' ')
 		url="https://api.deepinfra.com/v1/inference/${MODEL_NAME}"
 		data="{ \"input\": \"${input}\", \"stream\": false }"
 		send_action "${CHAT[ID]}" "typing"
-		deepinfra_post "${url}" "${data}" > "${output}"
+		deepinfra_post "${url}" "${data}" > "${response}"
 
 		send_action "${CHAT[ID]}" "typing"
-		jq -r '.results[0].generated_text' < "${output}"
+		jq -r '.results[0].generated_text' < "${response}"
 	}
 
 	chat(){
-		# Output stream
-		output="/tmp/${CHAT[ID]}-chat.response"
+		# Response file
+		response="/tmp/${CHAT[ID]}-chat.response"
 
 		# Chat
-		input="${1}"
+		input=$(echo "${1}" | tr '\n' ' ')
 		url="https://api.deepinfra.com/v1/openai/chat/completions"
 		data="{ \"model\": \"${MODEL_NAME}\", \"max_tokens\": \"${MAX_TOKENS}\", \"stream\": false, \"messages\": [ {\"role\": \"system\", \"content\": \"${SYSTEM_PROMPT}\"}, {\"role\": \"user\", \"content\": \"${input}\"} ] }"
 		send_action "${CHAT[ID]}" "typing"
-		deepinfra_post "${url}" "${data}" > "${output}"
+		deepinfra_post "${url}" "${data}" > "${response}"
 
 		send_action "${CHAT[ID]}" "typing"
-		jq -r '.choices[0].message.content' < "${output}"
+		jq -r '.choices[0].message.content' < "${response}"
+	}
+
+	raw_output(){
+		# Previous response
+		response="/tmp/${CHAT[ID]}-chat.response"
+
+		# Processing
+		send_action "${CHAT[ID]}" "typing"
+		jq -r '' < "${response}"
 	}
 
 	###########################
